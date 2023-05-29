@@ -4,7 +4,7 @@ import time
 import helmet
 import joystick
 import motor
-import tts
+import control
 import cv2
 import deletefile
 import sys
@@ -67,17 +67,18 @@ def button_start_callback(channel):
 GPIO.add_event_detect(leftbutton, GPIO.FALLING, callback=button_left_callback, bouncetime=100)
 GPIO.add_event_detect(start_button, GPIO.FALLING, callback=button_left_callback, bouncetime=100)
 GPIO.add_event_detect(bothbutton, GPIO.FALLING, callback=button_both_callback, bouncetime=100)
-
-
 GPIO.add_event_detect(rightbutton, GPIO.FALLING, callback=button_right_callback, bouncetime=100)
 
 
-#if not start:
-#    while True:
-#        if start:
-#            break
-#        pass
 
+while True:
+    if start:
+        break
+    pass
+
+helmet.ReadVol(0)
+
+loadcell.read_serial_data()
 
 def main():
     global detect_right
@@ -89,7 +90,6 @@ def main():
         if detect_both == True:
             GPIO.output(led_leftpin, GPIO.HIGH)
             GPIO.output(led_rightpin, GPIO.HIGH)
-            print("비상 깜빡이")
             time.sleep(0.5)
             GPIO.output(led_leftpin, GPIO.LOW)
             GPIO.output(led_rightpin, GPIO.LOW)
@@ -97,21 +97,20 @@ def main():
             
         if detect_left == True:
             GPIO.output(led_leftpin, GPIO.HIGH)
-            print("좌측 깜빡이")
+            time.sleep(0.5)
             GPIO.output(led_leftpin, GPIO.LOW)
-            if handle.steer()<380:
+            if handle.read_adc(3)<380:  #값변경 필요
                 detect_left= not detect_left
             time.sleep(0.5)
  
         if detect_right == True:
             GPIO.output(led_rightpin, GPIO.HIGH)
-            print("우측 깜빡이")
             time.sleep(0.5)
             GPIO.output(led_rightpin, GPIO.LOW)
             time.sleep(0.5)
-            if handle.steer()>480:
+            if handle.read_adc(3)>480:   #값변경 필요
                 detect_right= not detect_right
-        if start_button == False: 
+        if start_button == False:   
             GPIO.clean()
             motor.pwm1.stop()
             motor.pwm2.stop()
