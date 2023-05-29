@@ -1,8 +1,7 @@
 import RPi.GPIO as GPIO
-import time
 import joystick
-#import distance
-#뫁머 작동
+
+#모터 작동
 ENA = 13
 ENB = 21
 IN1 = 19
@@ -23,13 +22,16 @@ GPIO.setup(IN4,GPIO.OUT)
 pwm_freq = 1000
 pwm1=GPIO.PWM(ENA,pwm_freq)
 pwm2=GPIO.PWM(ENB,pwm_freq)
+pwm1.start(0)
 pwm2.start(0)
 def motor_control():
-        
-        speed=joystick.joytick_read()
+        k=joystick.read_adc(7)
+        speed = int(k)
+        if speed<0:
+                speed=0
         GPIO.output(IN1,GPIO.HIGH)
         GPIO.output(IN2,GPIO.LOW)
-        GPIO.output(IN3,GPIO.HIGH)
-        GPIO.output(IN4,GPIO.LOW)
+        GPIO.output(IN4,GPIO.HIGH)
+        GPIO.output(IN3,GPIO.LOW)
         pwm1.ChangeDutyCycle(speed)
         pwm2.ChangeDutyCycle(speed)
