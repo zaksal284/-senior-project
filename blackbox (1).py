@@ -1,10 +1,11 @@
 import cv2,sys,datetime,os #blackbox
 from PIL import ImageFont #blackbox
 import deletefile
-from main import start_button
+from main import start
 #------------------------------------------------- 비디오 녹화 및 저장시작-------------------------------------
 def cctv():
-   #----------------------------------------초기설정----------------------------------------------------------
+#-------------------------------------------------초기설정----------------------------------------------------------
+   
    Video=cv2.VideoCapture(0)
    Time = datetime.datetime.now()
    VideoFileName = Time.strftime('%Y-%m-%d_%H-%M-%S') + '.avi'      # 파일이름= 년 원 일 시 분 초.avi
@@ -40,9 +41,8 @@ def cctv():
       cv2.imshow('Inversed VIDEO', inversed) #좌우반전화면 출력
 
       out.write(inversed) #영상 저장
-    
-      if main.start_button == False:
-         Video.release() #동영상 닫기
-         out.release() #동영상 닫기   
-         cv2.destroyAllWindows()
-
+      if main.start == False:
+        Video.release() #동영상 닫기
+        out.release() #동영상 닫기   
+        cv2.destroyAllWindows()
+#------------------------------------------------------black box 종료-------------------------------------
