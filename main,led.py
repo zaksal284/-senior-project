@@ -13,6 +13,7 @@ import motor
 import blackbox
 import handle
 import loadcell
+import servo
 time.sleep(1)
 
 # GPIO 핀 번호 설정
@@ -79,6 +80,8 @@ while True:
 helmet.ReadVol(0)
 
 loadcell.read_serial_data()
+
+servo.serct()
 
 def main():
     global detect_right
