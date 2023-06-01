@@ -113,13 +113,16 @@ def main():
             time.sleep(0.5)
             if handle.read_adc(3)>480:   #값변경 필요
                 detect_right= not detect_right
-        if start_button == False:   
-            GPIO.clean()
-            motor.pwm1.stop()
-            motor.pwm2.stop()
-            multi.join()
-            time.sleep(0.5)
-            sys.exit()
+        if start_button == False:
+             try:
+                 motor.pwm1.stop()
+                 motor.pwm2.stop()
+                 GPIO.clean()   
+                 multi.join(10)
+                 sys.exit()
+             except TimeoutError:
+                 multi.terminate() 
+                 sys.exit()
 
 
 if __name__ == "__main__":
